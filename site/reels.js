@@ -22,6 +22,10 @@
       ['school/school_C-uPOIrpkYf','키링 꾸민 스쿨백'],
       ['school/school_DAqHqfpvANy','펄핑크 스쿨백']
     ]},
+    'kirakira wallet':{items:[['키라키라 카드지갑','/76/?idx=743']],v:[
+      ['wallet/kira_DZEyDRaJ-r7','키라키라 카드지갑 디테일'],
+      ['wallet/kira_DYCsp3rtO-S','키라키라 언박싱']
+    ]},
     'ribbon medium':{items:[['리본 미디움 스쿨백','/31/?idx=219']],v:[
       ['ribbon/ribbonmed_DdTqVsytZpa','왓츠인마이백 · 핑크']
     ]}
