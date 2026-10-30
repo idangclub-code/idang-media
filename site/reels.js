@@ -21,6 +21,9 @@
       ['school/school_DelZ8toR7n_','스쿨백 제품 컷'],
       ['school/school_C-uPOIrpkYf','키링 꾸민 스쿨백'],
       ['school/school_DAqHqfpvANy','펄핑크 스쿨백']
+    ]},
+    'ribbon medium':{items:[['리본 미디움 스쿨백','/shop_view/?idx=785']],v:[
+      ['ribbon/ribbonmed_DdTqVsytZpa','왓츠인마이백 · 핑크']
     ]}
   };
   function key(){var t=(document.title||'').split(' : ')[0].trim().toLowerCase();return REELS[t]?t:null;}
