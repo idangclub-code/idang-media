@@ -22,7 +22,7 @@
       ['school/school_C-uPOIrpkYf','키링 꾸민 스쿨백'],
       ['school/school_DAqHqfpvANy','펄핑크 스쿨백']
     ]},
-    'ribbon medium':{items:[['리본 미디움 스쿨백','/shop_view/?idx=785']],v:[
+    'ribbon medium':{items:[['리본 미디움 스쿨백','/31/?idx=219']],v:[
       ['ribbon/ribbonmed_DdTqVsytZpa','왓츠인마이백 · 핑크']
     ]}
   };
@@ -30,7 +30,7 @@
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
     if(document.getElementById('im-reels'))return;
-    var k=key(); if(!k||location.pathname.indexOf('shop_view')<0)return;
+    var k=key(); if(!k||!/[?&]idx=\d+/.test(location.search))return;
     var pd=document.getElementById('prod_detail'); if(!pd)return;
     var sec=pd.closest('.section_wrap')||pd; var R=REELS[k];
     var w=document.createElement('section'); w.id='im-reels';
