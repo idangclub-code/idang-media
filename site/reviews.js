@@ -15,7 +15,7 @@
   function catOf(n){n=n.toLowerCase();
     if(/sticker|die-cut|postcard|paper|omamori|keyring|haru|full set|pin set|poster|stand|towel/.test(n))return 'GOODS';
     if(/wallet|diary|card/.test(n))return 'WALLET';
-    if(/pin|clip|tail|cap|hat|socks|knee|angel pompom|hood\b/.test(n))return 'ACC';
+    if(/\bpin\b|clip|tail|cap|hat|socks|knee|angel pompom|hood\b/.test(n))return 'ACC';
     if(/skirt|coat|jacket|blouse|top|tee|t-shirt|t shirts|dress|onepiece|hoodie|pants|shorts|knit|setup|windbreaker|sleeveless|tank|sweatpants|half|babydoll set/.test(n))return 'CLOTHING';
     if(/bag|backpack|back pack|school|tote|medium|mini|ribbon|chain|bucket|ita|hoppy|angeling/.test(n))return 'BAG';
     return '';}
