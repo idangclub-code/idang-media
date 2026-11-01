@@ -84,7 +84,8 @@
   ]};
   ['angel haru','haru mini','cape haru','hime haru','spangle haru','hoppy haru'].forEach(function(k){REELS[k]=HARU});
   REELS['cape haru']={items:[['케이프 하루','/shop_view/?idx=681']],v:[['haru/caharu_DTs7Ir2ki4d','케이프 하루',[['케이프 하루','/shop_view/?idx=681']]]].concat(HARU.v)};
-  REELS['idx:677']={items:[['스쿨백 미니 핫핑크','/31/?idx=677']],v:[['school/schoolmini_DaDYjsmhXBe','핫핑크 스쿨백 미니 · 하트 키링']]};
+  REELS['idx:677']={items:[['스쿨백 미니 핫핑크','/31/?idx=677'],['스쿨백 미디움 핫핑크','/31/?idx=786']],v:[['school/schoolmini_DaDYjsmhXBe','핫핑크 스쿨백 미니 · 하트 키링']]};
+  REELS['idx:786']=REELS['idx:677'];
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
