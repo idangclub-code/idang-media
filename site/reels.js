@@ -18,21 +18,60 @@
       ['hime/hime_DbGjj7Eyh-q','착용 코디'],
       ['hime/hime_Dba2QX9h992','데일리 착용']
     ]},
-    'school bag':{items:[['스쿨백','/shop_view/?idx=32']],v:[
+    /* 컬러별 상세페이지는 'idx:번호' 로 따로 지정 (같은 상품명이어도 컬러마다 다른 영상) */
+    'idx:32':{items:[['펄핑크 스쿨백','/shop_view/?idx=32']],v:[
       ['school/school_DZ-aR4ONOwe','스쿨백 데일리 착용'],
       ['school/school_DelZ8toR7n_','스쿨백 제품 컷'],
       ['school/school_C-uPOIrpkYf','키링 꾸민 스쿨백'],
       ['school/school_DAqHqfpvANy','펄핑크 스쿨백']
     ]},
+    'idx:97':{items:[['아이보리 스쿨백 미디움','/shop_view/?idx=97']],v:[
+      ['school/school_C4sowKGpvfn','아이보리 스쿨백 왓츠인마이백']
+    ]},
+    'idx:71':{items:[['펄핑크 스쿨백 미디움','/shop_view/?idx=71']],v:[
+      ['school/schoolmed_DFW4222pRav','펄핑크 스쿨백 미디움']
+    ]},
+    'idx:219':{items:[['리본 미디움 스쿨백 핑크','/31/?idx=219']],v:[
+      ['ribbon/ribbonmed_DdTqVsytZpa','왓츠인마이백 · 핑크']
+    ]},
+    'idx:670':{items:[['리본 미디움 스쿨백 핑크','/31/?idx=670']],v:[
+      ['ribbon/ribbonmed_DdTqVsytZpa','왓츠인마이백 · 핑크']
+    ]},
+    'idx:540':{items:[['리본 미디움 페일핑크','/31/?idx=540']],v:[
+      ['ribbon/ribbonmed_DTutRKQAf0Y','페일핑크 착용 모음']
+    ]},
+    'idx:669':{items:[['리본 미디움 호피','/31/?idx=669']],v:[
+      ['ribbon/ribbonmed_DZ_yyXaM9-m','호피 스쿨백 꾸미기']
+    ]},
+    'idx:474':{items:[['슈가롤 미니 화이트','/shop_view/?idx=474']],v:[
+      ['sugar/sugar_DOEWdrqgUPj','슈가롤 화이트'],['sugar/sugar_DRwQMMXAWQ-','슈가롤 화이트 착용']
+    ]},
+    'idx:633':{items:[['슈가롤 미니 화이트','/shop_view/?idx=633']],v:[
+      ['sugar/sugar_DOEWdrqgUPj','슈가롤 화이트'],['sugar/sugar_DRwQMMXAWQ-','슈가롤 화이트 착용']
+    ]},
+    'ribbon diary':{items:[['리본 다이어리','/shop_view/?idx=640']],v:[
+      ['diary/diary_DWadCq7gXEo','리본 다이어리'],['diary/diary_DV1EGFFAYJY','리본 다이어리 · 백팩 코디']
+    ]},
+    'sailor coat':{items:[['세일러 코트','/shop_view/?idx=531']],v:[
+      ['sailor/sailor_DWd7MC4pbcG','세일러 코트 · 하루 엔젤']
+    ]},
+    'ita medium':{items:[['이타 스쿨백','/shop_view/?idx=228']],v:[
+      ['ita/ita_DWJp0jfAbuC','이타 스쿨백 꾸미기']
+    ]},
+    'usagi skirt':{items:[['우사기 스커트','/shop_view/?idx=523']],v:[
+      ['skirt/usagi_DU497D1AcZe','Hearts2Hearts 착용']
+    ]},
     'kirakira wallet':{items:[['키라키라 카드지갑','/76/?idx=743']],v:[
       ['wallet/kira_DZEyDRaJ-r7','키라키라 카드지갑 디테일'],
       ['wallet/kira_DYCsp3rtO-S','키라키라 언박싱']
-    ]},
-    'ribbon medium':{items:[['리본 미디움 스쿨백','/31/?idx=219']],v:[
-      ['ribbon/ribbonmed_DdTqVsytZpa','왓츠인마이백 · 핑크']
     ]}
   };
-  function key(){var t=(document.title||'').split(' : ')[0].trim().toLowerCase();return REELS[t]?t:null;}
+  /* 하루 인형: 하루 계열 상품 전부 같은 영상 */
+  var HARU={items:[['엔젤 하루','/shop_view/?idx=613']],v:[
+    ['haru/haru_DQwuj_hgfCs','하루 엔젤 미니'],['haru/haru_DapEOdMQlcl','하루 인형'],['haru/haru_Da0hecYyuq2','하루 인형'],['haru/haru_DaDeAt_hPg4','Hearts2Hearts 지우 · 하루']
+  ]};
+  ['angel haru','haru mini','cape haru','hime haru','spangle haru','hoppy haru'].forEach(function(k){REELS[k]=HARU});
+  function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
     if(document.getElementById('im-reels'))return;
