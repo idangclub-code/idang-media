@@ -73,11 +73,17 @@
     ['pompom/half_DS1wnAcAZw9','폼폼 하프 코트'],['pompom/half_DQPLkjSgZar','딸기우유 코트'],['pompom/half_DUa9noGgYJw','폼폼 하프 코트 착용']
   ]};
   /* 하루 인형: 하루 계열 상품 전부 같은 영상 */
-  var HARU={items:[['엔젤 하루','/shop_view/?idx=613']],v:[
-    ['haru/haru_DQwuj_hgfCs','하루 엔젤 미니'],['haru/haru_DapEOdMQlcl','하루 인형'],['haru/haru_Da0hecYyuq2','하루 인형'],['haru/haru_DaDeAt_hPg4','Hearts2Hearts 지우 · 하루']
+  /* 하루 인형: 하루 계열 상품 전부 같은 영상. 영상마다 실제로 나오는 제품을 3번째 칸에 적어둠 */
+  var H_ANGEL=['엔젤 하루','/shop_view/?idx=613'], H_MINI=['하루 미니','/shop_view/?idx=598'];
+  var HARU={items:[H_ANGEL],v:[
+    ['haru/haru_DLc0tbBpRcU','엔젤 하루 키링',[H_ANGEL]],
+    ['haru/haru_DQwuj_hgfCs','하루 엔젤 미니',[H_MINI]],
+    ['haru/haru_DapEOdMQlcl','하루 인형'],
+    ['haru/haru_Da0hecYyuq2','하루 인형'],
+    ['haru/haru_DaDeAt_hPg4','Hearts2Hearts 지우 · 엔젤 하루',[H_ANGEL]]
   ]};
   ['angel haru','haru mini','cape haru','hime haru','spangle haru','hoppy haru'].forEach(function(k){REELS[k]=HARU});
-  REELS['cape haru']={items:[['케이프 하루','/shop_view/?idx=681']],v:[['haru/caharu_DTs7Ir2ki4d','케이프 하루']].concat(HARU.v)};
+  REELS['cape haru']={items:[['케이프 하루','/shop_view/?idx=681']],v:[['haru/caharu_DTs7Ir2ki4d','케이프 하루',[['케이프 하루','/shop_view/?idx=681']]]].concat(HARU.v)};
   REELS['idx:677']={items:[['스쿨백 미니 핫핑크','/31/?idx=677']],v:[['school/schoolmini_DaDYjsmhXBe','핫핑크 스쿨백 미니 · 하트 키링']]};
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
@@ -91,7 +97,7 @@
     var row=w.querySelector('.rr');
     R.v.forEach(function(it,i){
       var b=document.createElement('button'); b.className='rc'; b.setAttribute('aria-label',it[1]);
-      b.innerHTML='<video muted loop playsinline preload="none" poster="'+BASE+it[0]+'.jpg" data-src="'+BASE+it[0]+'.mp4"></video><span class="rb">'+bag+R.items.length+'</span>';
+      b.innerHTML='<video muted loop playsinline preload="none" poster="'+BASE+it[0]+'.jpg" data-src="'+BASE+it[0]+'.mp4"></video><span class="rb">'+bag+(it[2]||R.items).length+'</span>';
       b.onclick=function(){openM(R,i)}; row.appendChild(b);
     });
     w.querySelector('.l').onclick=function(){row.scrollBy({left:-row.clientWidth*.75,behavior:'smooth'})};
@@ -108,7 +114,7 @@
     if(!m){m=document.createElement('div');m.id='im-rm';m.innerHTML='<div class="mb"><button class="x" aria-label="닫기">✕</button><video controls playsinline loop></video><div class="mi"></div></div>';document.body.appendChild(m);
       m.addEventListener('click',function(e){if(e.target===m||e.target.className==='x')close()});}
     var it=R.v[i], v=m.querySelector('video'); v.poster=BASE+it[0]+'.jpg'; v.src=BASE+it[0]+'.mp4'; v.muted=false;
-    m.querySelector('.mi').innerHTML='<div class="sm">@idang.club</div><h3>'+it[1]+'</h3><div class="sm">이 영상 속 아이템 '+R.items.length+'개</div>'+R.items.map(function(p){return '<a class="pp" href="'+p[1]+'"><span>'+p[0]+'</span><span>보러가기 ›</span></a>'}).join('')+'<a class="ig" href="'+IG+'" target="_blank" rel="noopener">@idang.club 인스타 보기 ↗</a>';
+    m.querySelector('.mi').innerHTML='<div class="sm">@idang.club</div><h3>'+it[1]+'</h3><div class="sm">이 영상 속 아이템 '+(it[2]||R.items).length+'개</div>'+(it[2]||R.items).map(function(p){return '<a class="pp" href="'+p[1]+'"><span>'+p[0]+'</span><span>보러가기 ›</span></a>'}).join('')+'<a class="ig" href="'+IG+'" target="_blank" rel="noopener">@idang.club 인스타 보기 ↗</a>';
     m.classList.add('on'); var p=v.play(); if(p&&p.catch)p.catch(function(){v.muted=true;v.play();});
   }
   function close(){var m=document.getElementById('im-rm');if(!m)return;var v=m.querySelector('video');v.pause();v.removeAttribute('src');v.load();m.classList.remove('on');}
