@@ -77,6 +77,8 @@
     ['haru/haru_DQwuj_hgfCs','하루 엔젤 미니'],['haru/haru_DapEOdMQlcl','하루 인형'],['haru/haru_Da0hecYyuq2','하루 인형'],['haru/haru_DaDeAt_hPg4','Hearts2Hearts 지우 · 하루']
   ]};
   ['angel haru','haru mini','cape haru','hime haru','spangle haru','hoppy haru'].forEach(function(k){REELS[k]=HARU});
+  REELS['cape haru']={items:[['케이프 하루','/shop_view/?idx=681']],v:[['haru/caharu_DTs7Ir2ki4d','케이프 하루']].concat(HARU.v)};
+  REELS['idx:677']={items:[['스쿨백 미니 핫핑크','/31/?idx=677']],v:[['school/schoolmini_DaDYjsmhXBe','핫핑크 스쿨백 미니 · 하트 키링']]};
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
@@ -94,7 +96,9 @@
     });
     w.querySelector('.l').onclick=function(){row.scrollBy({left:-row.clientWidth*.75,behavior:'smooth'})};
     w.querySelector('.r').onclick=function(){row.scrollBy({left:row.clientWidth*.75,behavior:'smooth'})};
-    sec.parentNode.insertBefore(w,sec.nextSibling);
+    /* 구매 박스 바로 아래(상세 탭 위)에 넣기 — 없으면 예전처럼 섹션 뒤 */
+    var gw=pd.querySelector('.goods_wrapper');
+    if(gw&&gw.parentNode){w.style.margin='28px auto 8px';gw.parentNode.insertBefore(w,gw.nextSibling);} else sec.parentNode.insertBefore(w,sec.nextSibling);
     /* 화면에 보일 때만 재생 */
     var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){if(!v.src)v.src=v.dataset.src;var p=v.play();if(p&&p.catch)p.catch(function(){});}else{v.pause();}})},{threshold:.4}):null;
     [].forEach.call(row.querySelectorAll('video'),function(v){if(io)io.observe(v);else{v.src=v.dataset.src;v.autoplay=true;}});
