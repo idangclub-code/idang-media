@@ -66,6 +66,12 @@
       ['wallet/kira_DYCsp3rtO-S','키라키라 언박싱']
     ]}
   };
+  REELS['pompom coat']={items:[['폼폼 코트','/shop_view/?idx=489']],v:[
+    ['pompom/coat_DDlt2YIJiJw','폼폼 코트 핑크'],['pompom/coat_DOG0DiqAQ-h','폼폼 코트 착용'],['pompom/coat_DUycwjokgi4','폼폼 코트 코디'],['pompom/coat_DSSI6yMgfO6','폼폼 코트 착용'],['pompom/coat_DGdNEJnyTBw','폼폼 코트 후기']
+  ]};
+  REELS['pompom half']={items:[['폼폼 하프 코트','/shop_view/?idx=532']],v:[
+    ['pompom/half_DS1wnAcAZw9','폼폼 하프 코트'],['pompom/half_DQPLkjSgZar','딸기우유 코트'],['pompom/half_DUa9noGgYJw','폼폼 하프 코트 착용']
+  ]};
   /* 하루 인형: 하루 계열 상품 전부 같은 영상 */
   var HARU={items:[['엔젤 하루','/shop_view/?idx=613']],v:[
     ['haru/haru_DQwuj_hgfCs','하루 엔젤 미니'],['haru/haru_DapEOdMQlcl','하루 인형'],['haru/haru_Da0hecYyuq2','하루 인형'],['haru/haru_DaDeAt_hPg4','Hearts2Hearts 지우 · 하루']
