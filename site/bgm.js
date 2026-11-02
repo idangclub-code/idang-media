@@ -4,7 +4,6 @@
    · 음표 버튼: 켜기/끄기 (끄면 7일이 아니라 계속 기억), 길게 누르거나 더블클릭: 다음 곡 */
 (function(){
   if (window.__idangBgm) return; window.__idangBgm = 4;
-  var OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext; if (!OAC) return;
   var LEVEL = 0.12, KEY = "idang_bgm_off3", POS = "idang_bgm_pos4", SR = 22050, TAIL = 3.2;
   var P = [[1,1,1.6],[2,.28,3.5],[3.01,.10,6],[5.43,.07,11],[8.9,.03,18]];
   var NN = {C:0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,F:5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11};
@@ -57,7 +56,29 @@
     for (var i = 0; i < n; i++){ var a = Math.max(-1, Math.min(1, x[i])); v.setInt16(44 + i * 2, a * 32767, true); }
     return URL.createObjectURL(new Blob([b], {type: "audio/wav"}));
   }
-  var cache = {};
+  var cache = {}, NOTE = {};
+  /* 순수 JS 합성(빠름): 음 높이별 오르골 한 음을 한 번만 만들어 두고 섞음 */
+  function tone(m){
+    if (NOTE[m]) return NOTE[m];
+    var f = 440 * Math.pow(2, (m - 69) / 12), n = Math.round(3.2 * SR), a = new Float32Array(n), at = Math.round(.003 * SR);
+    P.forEach(function(p){
+      var fr = f * p[0]; if (fr > SR / 2.2) return;
+      var w = 2 * Math.PI * fr / SR, dec = Math.exp(-p[2] / SR), env = p[1], ph = 0;
+      for (var i = 0; i < n; i++){
+        var e = i < at ? p[1] * i / at : (env *= dec);
+        a[i] += e * Math.sin(ph); ph += w;
+      }
+    });
+    return (NOTE[m] = a);
+  }
+  function verb(x){ /* 작은 방 울림 (원래 wet 0.06 느낌) */
+    var out = new Float32Array(x.length), C = [1116, 1356, 1557, 1617].map(function(d){ return {b: new Float32Array(Math.round(d * SR / 44100)), i: 0}; });
+    for (var k = 0; k < x.length; k++){
+      var y = 0; for (var c = 0; c < 4; c++){ var cb = C[c], v = cb.b[cb.i]; y += v; cb.b[cb.i] = x[k] + v * .82; cb.i = (cb.i + 1) % cb.b.length; }
+      out[k] = x[k] + y * .06 * .25;
+    }
+    return out;
+  }
   function render(id, cb){
     if (cache[id]) return cb(cache[id]);
     var S = SONGS[id], B;
@@ -65,33 +86,22 @@
     else { B = build(S); var r = S.rep || 1, one = B.len, ev = [];
       for (var q = 0; q < r; q++) B.ev.forEach(function(e){ ev.push([e[0] + q * one, e[1], e[2]]); });
       B = {ev: ev, len: one * r}; }
-    var total = B.len + TAIL, oc;
-    try { oc = new OAC(1, Math.ceil(total * SR), SR); } catch(e){ SR = 44100; oc = new OAC(1, Math.ceil(total * SR), SR); }
-    var dry = oc.createGain(); dry.connect(oc.destination);
-    var conv = oc.createConvolver(), ir = oc.createBuffer(1, SR * 1.6, SR), d = ir.getChannelData(0);
-    for (var i = 1; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-3.2 * i / SR);
-    conv.buffer = ir; var wet = oc.createGain(); wet.gain.value = 0.06; dry.connect(conv); conv.connect(wet); wet.connect(oc.destination);
-    B.ev.forEach(function(e){
-      var t = e[0], f = 440 * Math.pow(2, (e[1] - 69) / 12), vel = e[2] / 1000;
-      P.forEach(function(p){
-        var fr = f * p[0]; if (fr > SR / 2.2) return;
-        var o = oc.createOscillator(), g = oc.createGain();
-        o.frequency.value = fr; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(p[1] * vel, t + 0.003);
-        g.gain.setTargetAtTime(0, t + 0.003, 1 / p[2]); o.connect(g); g.connect(dry); o.start(t); o.stop(Math.min(t + 3.2, total));
-      });
-    });
-    function done(buf){
-      var s = buf.getChannelData(0), n = s.length, r = new Float32Array(n), peak = 0;
-      if (S.raw){ n = Math.round(S.len * SR); r = new Float32Array(n); for (var i = 0; i < n; i++) r[i] = s[i] + (i + n < s.length ? s[i + n] : 0); }
-      else r.set(s);
-      for (var j = 0; j < r.length; j++){ var a = Math.abs(r[j]); if (a > peak) peak = a; }
-      var k = LEVEL / (peak || 1); for (var z = 0; z < r.length; z++) r[z] *= k;
-      cache[id] = wav(r, SR); cb(cache[id]);
-    }
-    try { var pr = oc.startRendering(); if (pr && pr.then) pr.then(done); else oc.oncomplete = function(e){ done(e.renderedBuffer); }; }
-    catch(e){ console.warn("BGM 생성 실패", e); }
+    setTimeout(function(){
+      try {
+        var total = Math.ceil((B.len + TAIL) * SR), mix = new Float32Array(total);
+        B.ev.forEach(function(e){
+          var t = Math.round(e[0] * SR), a = tone(e[1]), v = e[2] / 1000, n = Math.min(a.length, total - t);
+          for (var i = 0; i < n; i++) mix[t + i] += a[i] * v;
+        });
+        var s = verb(mix), r;
+        if (S.raw){ var L = Math.round(S.len * SR); r = new Float32Array(L); for (var i = 0; i < L; i++) r[i] = s[i] + (i + L < s.length ? s[i + L] : 0); }
+        else r = s;
+        var peak = 0; for (var j = 0; j < r.length; j++){ var x = Math.abs(r[j]); if (x > peak) peak = x; }
+        var k = LEVEL / (peak || 1); for (var z = 0; z < r.length; z++) r[z] *= k;
+        cache[id] = wav(r, SR); cb(cache[id]);
+      } catch(e){ console.warn("BGM 생성 실패", e); }
+    }, 0);
   }
-
   window.__idangBgmRender = render;
   /* 상태 */
   var off = false; try { off = localStorage.getItem(KEY) === "1"; } catch(e){}
