@@ -5,15 +5,15 @@
   /* ── '같이 코디하면 더 귀여워' (관련상품 .idang-rel): 모바일에서 한 줄 가로 스크롤 ── */
   (function(){
     var c=document.createElement('style');c.id='idangRelMob';
-    c.textContent='@media(max-width:991px){.idang-rel .owl-stage-outer{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none;position:relative}'
-      +'.idang-rel .owl-stage-outer::-webkit-scrollbar{display:none}'
-      +'.idang-rel .owl-stage{flex-wrap:nowrap!important;justify-content:flex-start!important;transform:none!important;transition:none!important;margin:0!important}'
-      +'.idang-rel .owl-item{flex:0 0 38vw!important;width:38vw!important;scroll-snap-align:start}'
-      +'.idang-rel .owl-item.cloned{display:none!important}'
-      +'.idang-rel .owl-nav,.idang-rel .owl-dots{display:none!important}'
-      +'.idang-rel .ir-wrap{position:relative}.idang-rel .ir-a{position:absolute;top:38%;transform:translateY(-50%);z-index:3;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.94);box-shadow:0 3px 10px rgba(0,0,0,.14);font-size:18px;color:#4a2b3a;padding:0;line-height:34px}'
-      +'.idang-rel .ir-a.l{left:4px}.idang-rel .ir-a.r{right:4px}.idang-rel .ir-a[hidden]{display:none}}'
-      +'@media(min-width:992px){.idang-rel .ir-a{display:none}}';
+    c.textContent='@media(max-width:991px){html body .idang-rel .owl-stage-outer{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none;position:relative}'
+      +'html body .idang-rel .owl-stage-outer::-webkit-scrollbar{display:none}'
+      +'html body .idang-rel .owl-stage{flex-wrap:nowrap!important;justify-content:flex-start!important;transform:none!important;transition:none!important;margin:0!important;max-width:none!important;gap:0!important}'
+      +'html body .idang-rel .owl-item{flex:0 0 38vw!important;width:38vw!important;scroll-snap-align:start}'
+      +'html body .idang-rel .owl-item.cloned{display:none!important}'
+      +'html body .idang-rel .owl-nav,.idang-rel .owl-dots{display:none!important}'
+      +'html body .idang-rel .ir-wrap{position:relative}html body .idang-rel .ir-a{position:absolute;top:38%;transform:translateY(-50%);z-index:3;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.94);box-shadow:0 3px 10px rgba(0,0,0,.14);font-size:18px;color:#4a2b3a;padding:0;line-height:34px}'
+      +'html body .idang-rel .ir-a.l{left:4px}html body .idang-rel .ir-a.r{right:4px}html body .idang-rel .ir-a[hidden]{display:none}}'
+      +'@media(min-width:992px){html body .idang-rel .ir-a{display:none}}';
     document.head.appendChild(c);
     var mq=window.matchMedia&&window.matchMedia('(max-width:991px)');
     function setup(){
