@@ -1,5 +1,5 @@
 /* 4개 몰 SEO 코드 동기화 (2026-11-02). 관리자 SEO 페이지에서 실행. window.name 에 4개 몰 원본 스냅샷({kr,en,jp,cn}) 필요. */
-window.__sync1102 = function(V, mall, HASH){
+window.__sync1102 = function(V, mall, HASH, DRY){
   var W = JSON.parse(window.name), K = W.kr, log = [];
   function txt(v){ return v.state.doc.toString(); }
   function set(v, s){ v.dispatch({changes:{from:0, to:v.state.doc.length, insert:s}}); }
@@ -58,6 +58,7 @@ window.__sync1102 = function(V, mall, HASH){
   function chk(t, tag){ var re = /<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g, mm, bad = 0; while ((mm = re.exec(t))){ try { new Function(mm[1]); } catch(e){ bad++; log.push('SYNTAX ' + tag + ': ' + String(e).slice(0, 60)); } } return bad; }
   var bad = chk(b, 'body') + chk(f, 'footer');
   if (bad) { log.push('NOT APPLIED'); return log; }
-  set(B, b); set(F, f); log.push('applied');
+  if (DRY) { log.push("dry ok b" + b.length + " f" + f.length); return log; }
+  set(B, b); set(F, f); log.push("applied");
   return log;
 };
