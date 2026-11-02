@@ -2,7 +2,36 @@
 
 (function(){
   if(window.__imReels)return;window.__imReels=1;
-  var st=document.createElement('style');st.textContent="\n#im-reels{max-width:1200px;margin:56px auto 24px;padding:0 16px;text-align:center;font-family:\"Pretendard\",\"Apple SD Gothic Neo\",\"Noto Sans KR\",sans-serif;color:#4a2b3a}\n#im-reels .rt{font-family:\"Cherry Bomb One\",\"Pretendard\",cursive;font-size:clamp(24px,3.4vw,34px);margin:0 0 6px;color:#e86aa3;font-weight:400}\n#im-reels .rs{font-size:14px;color:#9a7a8a;margin:0 0 22px}\n#im-reels .rs b{color:#e86aa3}\n#im-reels .rw{position:relative}\n#im-reels .rr{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:6px}\n#im-reels .rr::-webkit-scrollbar{display:none}\n#im-reels .rc{flex:0 0 calc((100% - 36px)/4);aspect-ratio:9/16;border-radius:18px;overflow:hidden;position:relative;scroll-snap-align:start;cursor:pointer;background:#ffd9e8;border:0;padding:0}\n@media(max-width:768px){#im-reels .rc{flex-basis:calc((100% - 12px)/2)}}\n#im-reels video{width:100%;height:100%;object-fit:cover;display:block}\n#im-reels .rb{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.95);color:#4a2b3a;border-radius:999px;padding:5px 10px 5px 8px;display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700}\n#im-reels .rb svg{width:16px;height:16px}\n#im-reels .ra{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer;font-size:20px;color:#4a2b3a;z-index:2}\n#im-reels .ra.l{left:-6px}#im-reels .ra.r{right:-6px}\n@media(max-width:768px){#im-reels .ra{display:none}}\n#im-rm{position:fixed;inset:0;background:rgba(40,20,30,.6);z-index:99999;display:none;align-items:center;justify-content:center;padding:16px}\n#im-rm.on{display:flex}\n#im-rm .mb{background:#fff;border-radius:22px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);max-width:820px;width:100%;max-height:92vh;position:relative;font-family:\"Pretendard\",\"Apple SD Gothic Neo\",\"Noto Sans KR\",sans-serif;color:#4a2b3a}\n@media(max-width:640px){#im-rm .mb{grid-template-columns:1fr;overflow:auto}}\n#im-rm video{width:100%;aspect-ratio:9/16;max-height:86vh;object-fit:cover;background:#000;display:block}\n#im-rm .mi{padding:24px;text-align:left;display:flex;flex-direction:column;gap:12px}\n#im-rm .mi h3{margin:0;font-size:17px}\n#im-rm .mi .sm{font-size:13px;color:#9a7a8a}\n#im-rm .pp{display:flex;justify-content:space-between;align-items:center;border:1px solid #f4cfe0;border-radius:14px;padding:13px 14px;text-decoration:none;color:#4a2b3a;background:#fff0f6;font-size:14px}\n#im-rm .pp span:last-child{color:#e86aa3;font-weight:700;font-size:13px}\n#im-rm .ig{font-size:12px;color:#9a7a8a;text-decoration:none;margin-top:auto}\n#im-rm .ig:hover{color:#e86aa3}\n#im-rm .x{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);font-size:16px;cursor:pointer;z-index:2;color:#4a2b3a}\n";document.head.appendChild(st);
+  /* ── '같이 코디하면 더 귀여워' (관련상품 .idang-rel): 모바일에서 한 줄 가로 스크롤 ── */
+  (function(){
+    var c=document.createElement('style');c.id='idangRelMob';
+    c.textContent='@media(max-width:991px){.idang-rel .owl-stage-outer{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none;position:relative}'
+      +'.idang-rel .owl-stage-outer::-webkit-scrollbar{display:none}'
+      +'.idang-rel .owl-stage{flex-wrap:nowrap!important;justify-content:flex-start!important;transform:none!important;transition:none!important;margin:0!important}'
+      +'.idang-rel .owl-item{flex:0 0 38vw!important;width:38vw!important;scroll-snap-align:start}'
+      +'.idang-rel .owl-item.cloned{display:none!important}'
+      +'.idang-rel .owl-nav,.idang-rel .owl-dots{display:none!important}'
+      +'.idang-rel .ir-wrap{position:relative}.idang-rel .ir-a{position:absolute;top:38%;transform:translateY(-50%);z-index:3;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.94);box-shadow:0 3px 10px rgba(0,0,0,.14);font-size:18px;color:#4a2b3a;padding:0;line-height:34px}'
+      +'.idang-rel .ir-a.l{left:4px}.idang-rel .ir-a.r{right:4px}.idang-rel .ir-a[hidden]{display:none}}'
+      +'@media(min-width:992px){.idang-rel .ir-a{display:none}}';
+    document.head.appendChild(c);
+    var mq=window.matchMedia&&window.matchMedia('(max-width:991px)');
+    function setup(){
+      [].forEach.call(document.querySelectorAll('.idang-rel .owl-stage-outer'),function(o){
+        if(o.__ir)return;o.__ir=1;
+        /* 모바일 손가락 스와이프는 기본 가로 스크롤로 (캐러셀 드래그가 가로채지 않게) */
+        ['touchstart','touchmove','touchend','pointerdown','mousedown'].forEach(function(ev){o.addEventListener(ev,function(e){if(mq&&mq.matches)e.stopPropagation()},true)});
+        var wrap=o.parentNode; wrap.classList.add('ir-wrap');
+        var L=document.createElement('button'),R=document.createElement('button');L.className='ir-a l';R.className='ir-a r';L.type=R.type='button';L.textContent='‹';R.textContent='›';L.setAttribute('aria-label','prev');R.setAttribute('aria-label','next');
+        wrap.appendChild(L);wrap.appendChild(R);
+        L.onclick=function(){o.scrollBy({left:-o.clientWidth*.75,behavior:'smooth'})};R.onclick=function(){o.scrollBy({left:o.clientWidth*.75,behavior:'smooth'})};
+        function ar(){var max=o.scrollWidth-o.clientWidth;L.hidden=o.scrollLeft<=4;R.hidden=o.scrollLeft>=max-4||max<=4}
+        o.addEventListener('scroll',ar,{passive:true});window.addEventListener('resize',ar);setTimeout(ar,100);setTimeout(ar,1200);
+      });
+    }
+    var n=0,t=setInterval(function(){setup();if(++n>40)clearInterval(t)},500);
+  })();
+  var st=document.createElement('style');st.textContent="\n#im-reels{max-width:1200px;margin:56px auto 24px;padding:0 16px;text-align:center;font-family:\"Pretendard\",\"Apple SD Gothic Neo\",\"Noto Sans KR\",sans-serif;color:#4a2b3a}\n#im-reels .rt{font-family:\"Cherry Bomb One\",\"Pretendard\",cursive;font-size:clamp(24px,3.4vw,34px);margin:0 0 6px;color:#e86aa3;font-weight:400}\n#im-reels .rs{font-size:14px;color:#9a7a8a;margin:0 0 22px}\n#im-reels .rs b{color:#e86aa3}\n#im-reels .rw{position:relative}\n#im-reels .rr{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:6px}\n#im-reels .rr::-webkit-scrollbar{display:none}\n#im-reels .rc{flex:0 0 calc((100% - 36px)/4);aspect-ratio:9/16;border-radius:18px;overflow:hidden;position:relative;scroll-snap-align:start;cursor:pointer;background:#ffd9e8;border:0;padding:0}\n@media(max-width:768px){#im-reels .rc{flex-basis:calc((100% - 24px)/2.3)}}\n#im-reels video{width:100%;height:100%;object-fit:cover;display:block}\n#im-reels .rb{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.95);color:#4a2b3a;border-radius:999px;padding:5px 10px 5px 8px;display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700}\n#im-reels .rb svg{width:16px;height:16px}\n#im-reels .ra{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:0;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer;font-size:20px;color:#4a2b3a;z-index:2}\n#im-reels .ra.l{left:-6px}#im-reels .ra.r{right:-6px}\n#im-reels .ra[hidden]{display:none}\n@media(max-width:768px){#im-reels .ra{width:34px;height:34px;font-size:18px;background:rgba(255,255,255,.94)}#im-reels .ra.l{left:4px}#im-reels .ra.r{right:4px}}\n#im-reels.mob{float:left;width:100%;clear:both;margin:22px 0 6px !important}\n#im-rm{position:fixed;inset:0;background:rgba(40,20,30,.6);z-index:99999;display:none;align-items:center;justify-content:center;padding:16px}\n#im-rm.on{display:flex}\n#im-rm .mb{background:#fff;border-radius:22px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);max-width:820px;width:100%;max-height:92vh;position:relative;font-family:\"Pretendard\",\"Apple SD Gothic Neo\",\"Noto Sans KR\",sans-serif;color:#4a2b3a}\n@media(max-width:640px){#im-rm .mb{grid-template-columns:1fr;overflow:auto}}\n#im-rm video{width:100%;aspect-ratio:9/16;max-height:86vh;object-fit:cover;background:#000;display:block}\n#im-rm .mi{padding:24px;text-align:left;display:flex;flex-direction:column;gap:12px}\n#im-rm .mi h3{margin:0;font-size:17px}\n#im-rm .mi .sm{font-size:13px;color:#9a7a8a}\n#im-rm .pp{display:flex;justify-content:space-between;align-items:center;border:1px solid #f4cfe0;border-radius:14px;padding:13px 14px;text-decoration:none;color:#4a2b3a;background:#fff0f6;font-size:14px}\n#im-rm .pp span:last-child{color:#e86aa3;font-weight:700;font-size:13px}\n#im-rm .ig{font-size:12px;color:#9a7a8a;text-decoration:none;margin-top:auto}\n#im-rm .ig:hover{color:#e86aa3}\n#im-rm .x{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.92);font-size:16px;cursor:pointer;z-index:2;color:#4a2b3a}\n";document.head.appendChild(st);
   if(!document.querySelector('link[href*="Cherry+Bomb+One"]')){var lf=document.createElement('link');lf.rel='stylesheet';lf.href='https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap';document.head.appendChild(lf);}
   var BASE='https://cdn.jsdelivr.net/gh/idangclub-code/idang-media@main/';
   /* 사이트 코드가 특정 버전(@커밋)으로 불렀으면 같은 버전의 파일을 쓰도록 */
@@ -10,6 +39,19 @@
   /* 영상·썸네일도 같은 버전에서 불러오기 (@main 은 jsDelivr 캐시 때문에 새 파일이 늦게 뜰 수 있음) */
   BASE=SCR;
   var IG='https://www.instagram.com/idang.club/';
+  /* 몰별 언어: 국문(idang.club) / EN(idanglobal) / JP(idangjapan) / CN(idangchina) — 상품 idx 는 4개 몰 공통 */
+  var H=location.hostname, LANG=/idanglobal/.test(H)?'en':/idangjapan/.test(H)?'ja':/idangchina/.test(H)?'zh':'ko';
+  var TX={
+    ko:{sub:'아이당으로 완성한 나만의 스타일을 <b>@idang.club</b> 태그해서 공유해 주세요',items:'이 영상 속 아이템 {n}개',go:'보러가기 ›',ig:'@idang.club 인스타 보기 ↗',prev:'이전',next:'다음',close:'닫기'},
+    en:{sub:'Tag <b>@idang.club</b> and share your own idang style',items:'Items in this video: {n}',go:'Shop ›',ig:'See @idang.club on Instagram ↗',prev:'Previous',next:'Next',close:'Close'},
+    ja:{sub:'<b>@idang.club</b> をタグ付けして、あなたのアイダンスタイルをシェアしてね',items:'この動画のアイテム {n}点',go:'見る ›',ig:'@idang.club のInstagramを見る ↗',prev:'前へ',next:'次へ',close:'閉じる'},
+    zh:{sub:'标记 <b>@idang.club</b>，分享你的 idang 穿搭吧',items:'视频中的单品 {n}件',go:'去看看 ›',ig:'查看 @idang.club 的 Instagram ↗',prev:'上一个',next:'下一个',close:'关闭'}
+  }[LANG];
+  /* 해외몰: 상품 링크는 /shop_view/?idx= 로, 상품명은 그 몰의 상품명으로 바꿔서 보여줌 */
+  var NM={};
+  function plink(u){if(LANG==='ko')return u;var m=u.match(/idx=(\d+)/);return m?'/shop_view/?idx='+m[1]:u;}
+  function pname(p,cb){if(LANG==='ko')return cb(p[0]);var u=plink(p[1]);if(NM[u])return cb(NM[u]);
+    fetch(u).then(function(r){return r.text()}).then(function(t){var m=t.match(/<title>([^<]*)<\/title>/);NM[u]=m?m[1].split(' : ')[0].trim():p[0];cb(NM[u])}).catch(function(){cb('')});}
   /* 상품별 영상 목록: key = 상품명(페이지 제목 앞부분), v = 영상 파일, cap = 설명, items = 영상 속 상품 */
   var REELS={
     'hime ribbon':{items:[['히메리본백','/shop_view/?idx=780']],v:[
@@ -111,7 +153,7 @@
     var pd=document.getElementById('prod_detail'); if(!pd)return;
     var sec=pd.closest('.section_wrap')||pd; var R=REELS[k];
     var w=document.createElement('section'); w.id='im-reels';
-    w.innerHTML='<h2 class="rt">idang girls\' moments ♡</h2><p class="rs">아이당으로 완성한 나만의 스타일을 <b>@idang.club</b> 태그해서 공유해 주세요</p><div class="rw"><button class="ra l" aria-label="이전">‹</button><div class="rr"></div><button class="ra r" aria-label="다음">›</button></div>';
+    w.innerHTML='<h2 class="rt">idang girls\' moments ♡</h2><p class="rs">'+TX.sub+'</p><div class="rw"><button class="ra l" aria-label="'+TX.prev+'">‹</button><div class="rr"></div><button class="ra r" aria-label="'+TX.next+'">›</button></div>';
     var row=w.querySelector('.rr');
     R.v.forEach(function(it,i){
       var b=document.createElement('button'); b.className='rc'; b.setAttribute('aria-label',it[1]);
@@ -122,7 +164,17 @@
     w.querySelector('.r').onclick=function(){row.scrollBy({left:row.clientWidth*.75,behavior:'smooth'})};
     /* 구매 박스 바로 아래(상세 탭 위)에 넣기 — 없으면 예전처럼 섹션 뒤 */
     var gw=pd.querySelector('.goods_wrapper');
-    if(gw&&gw.parentNode){w.style.margin='28px auto 8px';gw.parentNode.insertBefore(w,gw.nextSibling);} else sec.parentNode.insertBefore(w,sec.nextSibling);
+    /* PC: 구매 박스 아래 / 모바일(세로 배치): 상품 사진 바로 아래 */
+    var imgCol=gw&&gw.children[0], mq=window.matchMedia?window.matchMedia('(max-width:991px)'):null;
+    function place(){
+      if(mq&&mq.matches&&imgCol&&imgCol.parentNode===gw){w.classList.add('mob');w.style.margin='';if(w.previousSibling!==imgCol)gw.insertBefore(w,imgCol.nextSibling);}
+      else{w.classList.remove('mob');if(gw&&gw.parentNode){w.style.margin='28px auto 8px';if(w.previousSibling!==gw)gw.parentNode.insertBefore(w,gw.nextSibling);} else if(!w.parentNode)sec.parentNode.insertBefore(w,sec.nextSibling);}
+    }
+    place(); if(mq){if(mq.addEventListener)mq.addEventListener('change',place);else if(mq.addListener)mq.addListener(place);}
+    /* 화살표: 넘길 게 있을 때만 표시 (처음엔 왼쪽 숨김, 끝에선 오른쪽 숨김) */
+    var la=w.querySelector('.l'), ra=w.querySelector('.r');
+    function arrows(){var max=row.scrollWidth-row.clientWidth;la.hidden=row.scrollLeft<=4;ra.hidden=row.scrollLeft>=max-4||max<=4;}
+    row.addEventListener('scroll',arrows,{passive:true}); window.addEventListener('resize',arrows); setTimeout(arrows,60); setTimeout(arrows,800);
     /* 화면에 보일 때만 재생 */
     var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){var v=e.target;if(e.isIntersecting){if(!v.src)v.src=v.dataset.src;var p=v.play();if(p&&p.catch)p.catch(function(){});}else{v.pause();}})},{threshold:.4}):null;
     [].forEach.call(row.querySelectorAll('video'),function(v){if(io)io.observe(v);else{v.src=v.dataset.src;v.autoplay=true;}});
@@ -132,7 +184,10 @@
     if(!m){m=document.createElement('div');m.id='im-rm';m.innerHTML='<div class="mb"><button class="x" aria-label="닫기">✕</button><video controls playsinline loop></video><div class="mi"></div></div>';document.body.appendChild(m);
       m.addEventListener('click',function(e){if(e.target===m||e.target.className==='x')close()});}
     var it=R.v[i], v=m.querySelector('video'); v.poster=BASE+it[0]+'.jpg'; v.src=BASE+it[0]+'.mp4'; v.muted=false;
-    m.querySelector('.mi').innerHTML='<div class="sm">@idang.club</div><h3>'+it[1]+'</h3><div class="sm">이 영상 속 아이템 '+(it[2]||R.items).length+'개</div>'+(it[2]||R.items).map(function(p){return '<a class="pp" href="'+p[1]+'"><span>'+p[0]+'</span><span>보러가기 ›</span></a>'}).join('')+'<a class="ig" href="'+IG+'" target="_blank" rel="noopener">@idang.club 인스타 보기 ↗</a>';
+    var its=it[2]||R.items, mi=m.querySelector('.mi');
+    mi.innerHTML='<div class="sm">@idang.club</div><h3>'+(LANG==='ko'?it[1]:'')+'</h3><div class="sm">'+TX.items.replace('{n}',its.length)+'</div>'+its.map(function(p){return '<a class="pp" href="'+plink(p[1])+'"><span>'+(LANG==='ko'?p[0]:'')+'</span><span>'+TX.go+'</span></a>'}).join('')+'<a class="ig" href="'+IG+'" target="_blank" rel="noopener">'+TX.ig+'</a>';
+    if(LANG!=='ko'){var sp=mi.querySelectorAll('.pp span:first-child');its.forEach(function(p,j){pname(p,function(n){sp[j].textContent=n;if(j===0)mi.querySelector('h3').textContent=n;})});}
+    m.querySelector('.x').setAttribute('aria-label',TX.close);
     m.classList.add('on'); var p=v.play(); if(p&&p.catch)p.catch(function(){v.muted=true;v.play();});
   }
   function close(){var m=document.getElementById('im-rm');if(!m)return;var v=m.querySelector('video');v.pause();v.removeAttribute('src');v.load();m.classList.remove('on');}
