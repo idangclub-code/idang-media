@@ -193,6 +193,8 @@
   function close(){var m=document.getElementById('im-rm');if(!m)return;var v=m.querySelector('video');v.pause();v.removeAttribute('src');v.load();m.classList.remove('on');}
   document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
   /* 리뷰 모음 페이지(/reviews)에서 쓰도록 공개 + reviews.js 불러오기 */
+  /* 오르골 BGM (여러 곡 랜덤) — 4개 몰 공통 */
+  (function(){if(window.__idangBgm)return;var b=document.createElement('script');b.src=SCR+'site/bgm.js?v='+Math.floor(Date.now()/36e5);b.defer=true;document.head.appendChild(b);})();
   window.__IM_REELS=REELS; window.__imReelsOpen=openM;
   if(/^\/reviews\/?$/.test(location.pathname)){var rs=document.createElement('script');rs.src=SCR+'site/reviews.js?v='+Math.floor(Date.now()/36e5);rs.defer=true;document.head.appendChild(rs);}
   var n=0,t=setInterval(function(){build();if(document.getElementById('im-reels')||++n>40)clearInterval(t)},250);
