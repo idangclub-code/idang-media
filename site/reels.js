@@ -157,7 +157,7 @@
     var row=w.querySelector('.rr');
     R.v.forEach(function(it,i){
       var b=document.createElement('button'); b.className='rc'; b.setAttribute('aria-label',it[1]);
-      b.innerHTML='<video muted loop playsinline preload="none" poster="'+BASE+it[0]+'.jpg" data-src="'+BASE+it[0]+'.mp4"></video><span class="rb">'+bag+(it[2]||R.items).length+'</span>';
+      b.innerHTML='<video muted loop playsinline preload="none" poster="'+BASE+it[0]+'.jpg" data-src="'+BASE+it[0]+'.mp4"></video>';
       b.onclick=function(){openM(R,i)}; row.appendChild(b);
     });
     w.querySelector('.l').onclick=function(){row.scrollBy({left:-row.clientWidth*.75,behavior:'smooth'})};
