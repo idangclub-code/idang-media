@@ -92,6 +92,7 @@
     catch(e){ console.warn("BGM 생성 실패", e); }
   }
 
+  window.__idangBgmRender = render;
   /* 상태 */
   var off = false; try { off = localStorage.getItem(KEY) === "1"; } catch(e){}
   var st = null; try { st = JSON.parse(sessionStorage.getItem(POS) || "null"); } catch(e){}
