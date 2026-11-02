@@ -6,17 +6,26 @@
   if (window.__idangBgm) return; window.__idangBgm = 4;
   var LEVEL = 0.12, KEY = "idang_bgm_off3", POS = "idang_bgm_pos4", SR = 22050, TAIL = 3.2;
   var P = [[1,1,1.6],[2,.28,3.5],[3.01,.10,6],[5.43,.07,11],[8.9,.03,18]];
+  /* 악기: P=[배음비, 세기, 감쇠], len=음 길이(초), at=어택(초), click=타격 잡음, det=코러스(센트) */
+  var INST = {
+    orgel:   {P: P, len: 3.2, at: .003},
+    crystal: {P: [[1,1,.75],[2,.22,1.3],[3,.07,2.4],[4.01,.09,1.9],[6.02,.03,3]], len: 4.8, at: .012, det: 5},   /* 영롱한 유리 오르골 */
+    xylo:    {P: [[1,1,6.5],[3.0,.28,13],[6.3,.09,26],[9.9,.03,40]], len: 1.3, at: .0015, click: .35},          /* 실로폰 */
+    glock:   {P: [[1,1,1.05],[2.76,.36,2.6],[5.4,.16,5],[8.93,.07,8]], len: 3.8, at: .002, click: .08},         /* 글로켄(종소리) */
+    toy:     {P: [[1,1,2.6],[2.51,.32,5],[5.0,.12,9],[7.6,.05,14]], len: 2.2, at: .002, click: .12},            /* 토이피아노 */
+    kalimba: {P: [[1,1,2.2],[5.9,.22,11],[11.5,.05,22]], len: 2.6, at: .004, click: .1}                       /* 칼림바 */
+  };
   var NN = {C:0,'C#':1,Db:1,D:2,'D#':3,Eb:3,E:4,F:5,'F#':6,Gb:6,G:7,'G#':8,Ab:8,A:9,'A#':10,Bb:10,B:11};
   function mid(s){ if (typeof s === 'number') return s; var m = /^([A-G][#b]?)(\d)$/.exec(s); return m ? 12 * (+m[2] + 1) + NN[m[1]] : 0; }
   var CH = {C:[48,55,60,64],G:[43,50,55,59],F:[41,48,53,57],Am:[45,52,57,60],Em:[40,47,52,55],D:[50,57,62,66],A:[45,52,57,61],Bm:[47,54,59,62],'F#m':[42,49,54,57],E:[40,47,52,56],Dm:[50,57,62,65],'E7':[40,47,50,56],Bb:[46,53,58,62],Gm:[43,50,55,58]};
   /* 멜로디+코드 → 오르골 음표 목록 [초, midi, 세기] */
   function build(S){
     var spb = 60 / S.bpm, out = [], t = 0, up = S.up || 0;
-    S.m.forEach(function(x){ var n = mid(x[0]); if (n) out.push([t, n + up, S.mv || 430]); t += x[1] * spb; });
+    S.m.forEach(function(x){ var n = mid(x[0]); if (n) out.push([t, n + up, S.mv || 430, S.mi || 'orgel']); t += x[1] * spb; });
     var len = t; t = 0;
     (S.c || []).forEach(function(x){
       var c = CH[x[0]], pat = S.arp || [0,1,2,3,2,1], step = (S.as || .5) * spb, k = 0;
-      for (var u = 0; u < x[1] * spb - 1e-6 && t + u < len; u += step, k++) out.push([t + u, c[pat[k % pat.length]] + 12, k % pat.length ? 170 : 290]);
+      for (var u = 0; u < x[1] * spb - 1e-6 && t + u < len; u += step, k++) out.push([t + u, c[pat[k % pat.length]] + 12 + (S.cu || 0), (k % pat.length ? 170 : 290) * (S.cv || 1), S.ci || S.mi || 'orgel']);
       t += x[1] * spb;
     });
     return {ev: out, len: len + (S.gap || 1.2)};
@@ -60,24 +69,31 @@
   }
   var cache = {}, NOTE = {};
   /* 순수 JS 합성(빠름): 음 높이별 오르골 한 음을 한 번만 만들어 두고 섞음 */
-  function tone(m){
-    if (NOTE[m]) return NOTE[m];
-    var f = 440 * Math.pow(2, (m - 69) / 12), n = Math.round(3.2 * SR), a = new Float32Array(n), at = Math.round(.003 * SR);
-    P.forEach(function(p){
-      var fr = f * p[0]; if (fr > SR / 2.2) return;
-      var w = 2 * Math.PI * fr / SR, dec = Math.exp(-p[2] / SR), env = p[1], ph = 0;
-      for (var i = 0; i < n; i++){
-        var e = i < at ? p[1] * i / at : (env *= dec);
-        a[i] += e * Math.sin(ph); ph += w;
-      }
+  function tone(m, ins){
+    var key = ins + m; if (NOTE[key]) return NOTE[key];
+    var I = INST[ins] || INST.orgel;
+    var f = 440 * Math.pow(2, (m - 69) / 12), n = Math.round(I.len * SR), a = new Float32Array(n), at = Math.max(1, Math.round(I.at * SR));
+    var dets = I.det ? [-I.det, I.det] : [0];
+    dets.forEach(function(dc){
+      I.P.forEach(function(p){
+        var fr = f * p[0] * Math.pow(2, dc / 1200); if (fr > SR / 2.2) return;
+        var w = 2 * Math.PI * fr / SR, dec = Math.exp(-p[2] / SR), env = p[1] / dets.length, ph = 0, pk = p[1] / dets.length;
+        for (var i = 0; i < n; i++){
+          var e = i < at ? pk * i / at : (env *= dec);
+          a[i] += e * Math.sin(ph); ph += w;
+        }
+      });
     });
-    return (NOTE[m] = a);
+    if (I.click){ var cn = Math.round(.006 * SR), seed = m * 9301 + 49297; for (var j = 0; j < cn; j++){ seed = (seed * 9301 + 49297) % 233280; a[j] += I.click * (seed / 116640 - 1) * (1 - j / cn); } }
+    var fade = Math.round(.05 * SR); for (var z = 0; z < fade; z++) a[n - 1 - z] *= z / fade;
+    return (NOTE[key] = a);
   }
-  function verb(x){ /* 작은 방 울림 (원래 wet 0.06 느낌) */
+  function verb(x, wet, fb){ /* 방 울림: 기본 wet 0.06 */
+    wet = wet || .06; fb = fb || .82;
     var out = new Float32Array(x.length), C = [1116, 1356, 1557, 1617].map(function(d){ return {b: new Float32Array(Math.round(d * SR / 44100)), i: 0}; });
     for (var k = 0; k < x.length; k++){
-      var y = 0; for (var c = 0; c < 4; c++){ var cb = C[c], v = cb.b[cb.i]; y += v; cb.b[cb.i] = x[k] + v * .82; cb.i = (cb.i + 1) % cb.b.length; }
-      out[k] = x[k] + y * .06 * .25;
+      var y = 0; for (var c = 0; c < 4; c++){ var cb = C[c], v = cb.b[cb.i]; y += v; cb.b[cb.i] = x[k] + v * fb; cb.i = (cb.i + 1) % cb.b.length; }
+      out[k] = x[k] + y * wet * .25;
     }
     return out;
   }
@@ -86,16 +102,16 @@
     var S = SONGS[id], B;
     if (S.raw) B = {ev: S.raw, len: S.len};
     else { B = build(S); var r = S.rep || 1, one = B.len, ev = [];
-      for (var q = 0; q < r; q++) B.ev.forEach(function(e){ ev.push([e[0] + q * one, e[1], e[2]]); });
+      for (var q = 0; q < r; q++) B.ev.forEach(function(e){ ev.push([e[0] + q * one, e[1], e[2], e[3]]); });
       B = {ev: ev, len: one * r}; }
     setTimeout(function(){
       try {
         var total = Math.ceil((B.len + TAIL) * SR), mix = new Float32Array(total);
         B.ev.forEach(function(e){
-          var t = Math.round(e[0] * SR), a = tone(e[1]), v = e[2] / 1000, n = Math.min(a.length, total - t);
+          var t = Math.round(e[0] * SR), a = tone(e[1], e[3] || 'orgel'), v = e[2] / 1000, n = Math.min(a.length, total - t);
           for (var i = 0; i < n; i++) mix[t + i] += a[i] * v;
         });
-        var s = verb(mix), r;
+        var s = verb(mix, S.wet, S.fb), r;
         if (S.raw){ var L = Math.round(S.len * SR); r = new Float32Array(L); for (var i = 0; i < L; i++) r[i] = s[i] + (i + L < s.length ? s[i + L] : 0); }
         else r = s;
         var peak = 0; for (var j = 0; j < r.length; j++){ var x = Math.abs(r[j]); if (x > peak) peak = x; }
