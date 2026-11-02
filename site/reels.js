@@ -7,6 +7,8 @@
   var BASE='https://cdn.jsdelivr.net/gh/idangclub-code/idang-media@main/';
   /* 사이트 코드가 특정 버전(@커밋)으로 불렀으면 같은 버전의 파일을 쓰도록 */
   var CS=document.currentScript&&document.currentScript.src||'';var VM=CS.match(/^(https:\/\/cdn\.jsdelivr\.net\/gh\/idangclub-code\/idang-media@[^/]+\/)/);var SCR=VM?VM[1]:BASE;
+  /* 영상·썸네일도 같은 버전에서 불러오기 (@main 은 jsDelivr 캐시 때문에 새 파일이 늦게 뜰 수 있음) */
+  BASE=SCR;
   var IG='https://www.instagram.com/idang.club/';
   /* 상품별 영상 목록: key = 상품명(페이지 제목 앞부분), v = 영상 파일, cap = 설명, items = 영상 속 상품 */
   var REELS={
@@ -23,13 +25,28 @@
       ['school/school_DZ-aR4ONOwe','스쿨백 데일리 착용'],
       ['school/school_DelZ8toR7n_','스쿨백 제품 컷'],
       ['school/school_C-uPOIrpkYf','키링 꾸민 스쿨백'],
-      ['school/school_DAqHqfpvANy','펄핑크 스쿨백']
+      ['school/school_DAqHqfpvANy','펄핑크 스쿨백'],
+      ['school/school_C6jCMVEJuQW','스쿨백 코디 모음'],
+      ['school/school_DDHY3M3ykfJ','헬로키티 스쿨백'],
+      ['school/school_DEzoP_Myybb','스쿨백 꾸미기'],
+      ['school/school_DGdLRxfyqb5','스쿨백 언박싱']
     ]},
     'idx:97':{items:[['아이보리 스쿨백 미디움','/shop_view/?idx=97']],v:[
       ['school/school_C4sowKGpvfn','아이보리 스쿨백 왓츠인마이백']
     ]},
     'idx:71':{items:[['펄핑크 스쿨백 미디움','/shop_view/?idx=71']],v:[
-      ['school/schoolmed_DFW4222pRav','펄핑크 스쿨백 미디움']
+      ['school/schoolmed_DFW4222pRav','펄핑크 스쿨백 미디움'],
+      ['school/schoolmed_C6eR2FppiAM','여행 가방 코디'],
+      ['school/schoolmed_C84ty-FSGBm','헬로키티 스쿨백 미디움'],
+      ['school/school_DEzoP_Myybb','스쿨백 꾸미기'],
+      ['school/schoolmed_DWoErbbgTWK','스쿨백 착용'],
+      ['school/school_DelZ8toR7n_','스쿨백 제품 컷']
+    ]},
+    'idx:99':{items:[['펄핑크 스쿨백 미니','/shop_view/?idx=99']],v:[
+      ['school/schoolmini_C71ftUbv5vq','펄핑크 스쿨백 미니'],
+      ['school/schoolmini_C8zjGBXStfW','왓츠인마이백'],
+      ['school/schoolmini_DUzzuTSgfQg','스쿨백 미니 착용'],
+      ['school/schoolmed_DWoErbbgTWK','스쿨백 착용']
     ]},
     'idx:219':{items:[['리본 미디움 스쿨백 핑크','/31/?idx=219']],v:[
       ['ribbon/ribbonmed_DdTqVsytZpa','왓츠인마이백 · 핑크']
