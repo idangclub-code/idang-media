@@ -2,29 +2,28 @@
 
 (function(){
   if(window.__imReels)return;window.__imReels=1;
-  /* ── '같이 코디하면 더 귀여워' (관련상품 .idang-rel): 모바일에서 한 줄 가로 스크롤 ── */
+  /* ── '같이 코디하면 더 귀여워' (관련상품 .idang-rel): 전 기기 한 줄 가로 스크롤 + 양옆 화살표 ── */
   (function(){
     var c=document.createElement('style');c.id='idangRelMob';
-    c.textContent='@media(max-width:991px){html body .idang-rel .owl-stage-outer{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none;position:relative}'
+    c.textContent='html body .idang-rel .owl-stage-outer{overflow-x:auto!important;overflow-y:hidden!important;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;scrollbar-width:none;position:relative}'
       +'html body .idang-rel .owl-stage-outer::-webkit-scrollbar{display:none}'
-      +'html body .idang-rel .owl-stage{flex-wrap:nowrap!important;justify-content:flex-start!important;transform:none!important;transition:none!important;margin:0!important;max-width:none!important;gap:0!important}'
-      +'html body .idang-rel .owl-item{flex:0 0 38vw!important;width:38vw!important;scroll-snap-align:start}'
+      +'html body .idang-rel .owl-stage{display:flex!important;flex-wrap:nowrap!important;justify-content:flex-start!important;transform:none!important;transition:none!important;margin:0!important;max-width:none!important;width:auto!important;gap:12px!important}'
+      +'html body .idang-rel .owl-item{flex:0 0 calc((100% - 36px)/4.2)!important;width:calc((100% - 36px)/4.2)!important;max-width:none!important;margin:0!important;scroll-snap-align:start}'
       +'html body .idang-rel .owl-item.cloned{display:none!important}'
-      +'html body .idang-rel .owl-nav,.idang-rel .owl-dots{display:none!important}'
-      +'html body .idang-rel .ir-wrap{position:relative}html body .idang-rel .ir-a{position:absolute;top:38%;transform:translateY(-50%);z-index:3;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.94);box-shadow:0 3px 10px rgba(0,0,0,.14);font-size:18px;color:#4a2b3a;padding:0;line-height:34px}'
-      +'html body .idang-rel .ir-a.l{left:4px}html body .idang-rel .ir-a.r{right:4px}html body .idang-rel .ir-a[hidden]{display:none}}'
-      +'@media(min-width:992px){html body .idang-rel .ir-a{display:none}}';
+      +'html body .idang-rel .owl-nav,html body .idang-rel .owl-dots{display:none!important}'
+      +'html body .idang-rel .ir-wrap{position:relative}html body .idang-rel .ir-a{position:absolute;top:40%;transform:translateY(-50%);z-index:3;width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.95);box-shadow:0 3px 12px rgba(0,0,0,.15);font-size:20px;color:#4a2b3a;padding:0;line-height:38px;cursor:pointer}'
+      +'html body .idang-rel .ir-a.l{left:-4px}html body .idang-rel .ir-a.r{right:-4px}html body .idang-rel .ir-a[hidden]{display:none}'
+      +'@media(max-width:991px){html body .idang-rel .owl-item{flex:0 0 38vw!important;width:38vw!important}html body .idang-rel .ir-a{width:34px;height:34px;font-size:18px;line-height:34px}html body .idang-rel .ir-a.l{left:4px}html body .idang-rel .ir-a.r{right:4px}}';
     document.head.appendChild(c);
-    var mq=window.matchMedia&&window.matchMedia('(max-width:991px)');
     function setup(){
       [].forEach.call(document.querySelectorAll('.idang-rel .owl-stage-outer'),function(o){
         if(o.__ir)return;o.__ir=1;
-        /* 모바일 손가락 스와이프는 기본 가로 스크롤로 (캐러셀 드래그가 가로채지 않게) */
-        ['touchstart','touchmove','touchend','pointerdown','mousedown'].forEach(function(ev){o.addEventListener(ev,function(e){if(mq&&mq.matches)e.stopPropagation()},true)});
+        /* 캐러셀 드래그가 가로 스크롤을 가로채지 않게 (전 기기) */
+        ['touchstart','touchmove','touchend','pointerdown','mousedown'].forEach(function(ev){o.addEventListener(ev,function(e){e.stopPropagation()},true)});
         var wrap=o.parentNode; wrap.classList.add('ir-wrap');
         var L=document.createElement('button'),R=document.createElement('button');L.className='ir-a l';R.className='ir-a r';L.type=R.type='button';L.textContent='‹';R.textContent='›';L.setAttribute('aria-label','prev');R.setAttribute('aria-label','next');
         wrap.appendChild(L);wrap.appendChild(R);
-        L.onclick=function(){o.scrollBy({left:-o.clientWidth*.75,behavior:'smooth'})};R.onclick=function(){o.scrollBy({left:o.clientWidth*.75,behavior:'smooth'})};
+        L.onclick=function(){o.scrollBy({left:-o.clientWidth*.7,behavior:'smooth'})};R.onclick=function(){o.scrollBy({left:o.clientWidth*.7,behavior:'smooth'})};
         function ar(){var max=o.scrollWidth-o.clientWidth;L.hidden=o.scrollLeft<=4;R.hidden=o.scrollLeft>=max-4||max<=4}
         o.addEventListener('scroll',ar,{passive:true});window.addEventListener('resize',ar);setTimeout(ar,100);setTimeout(ar,1200);
       });
