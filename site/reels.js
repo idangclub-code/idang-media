@@ -89,10 +89,6 @@
       ['school/schoolmini_DUzzuTSgfQg','스쿨백 미니 착용'],
       ['school/schoolmed_DWoErbbgTWK','스쿨백 착용']
     ]},
-    /* 리본 우사기 핑크그레이 (자켓 789 · 스커트 790 · 셋업 791) */
-    'idx:789':{items:[['리본 우사기 자켓','/shop_view/?idx=789'],['리본 우사기 스커트','/shop_view/?idx=790'],['리본 우사기 셋업','/shop_view/?idx=791']],v:[
-      ['usagi/ribbonusagi_1113','리본 우사기 핑크그레이 착용']
-    ]},
     'idx:219':{items:[['리본 미디움 스쿨백 핑크','/31/?idx=219']],v:[
       ['ribbon/ribbonmed_DdTqVsytZpa','왓츠인마이백 · 핑크']
     ]},
@@ -196,7 +192,6 @@
   function close(){var m=document.getElementById('im-rm');if(!m)return;var v=m.querySelector('video');v.pause();v.removeAttribute('src');v.load();m.classList.remove('on');}
   document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
   /* 리뷰 모음 페이지(/reviews)에서 쓰도록 공개 + reviews.js 불러오기 */
-  REELS['idx:790']=REELS['idx:791']=REELS['idx:789'];
   /* 오르골 BGM (여러 곡 랜덤) — 4개 몰 공통 */
   (function(){if(window.__idangBgm)return;var b=document.createElement('script');b.src=SCR+'site/bgm.js?v='+Math.floor(Date.now()/36e5);b.defer=true;document.head.appendChild(b);})();
   window.__IM_REELS=REELS; window.__imReelsOpen=openM;
