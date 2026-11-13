@@ -146,7 +146,7 @@
   REELS['idx:786']=REELS['idx:677'];
   /* 리본우사기 핑크그레이 (2026-11-10): 자켓 789 · 스커트 790 · 셋업 791 */
   (function(){var J=['리본우사기 자켓','/shop_view/?idx=789'],S=['리본우사기 스커트','/shop_view/?idx=790'];
-    var RU={items:[J,S],v:[['usagi/ribbonusagi_selfie','리본우사기 핑크그레이 착용샷'],['usagi/ribbonusagi_lookbook','리본우사기 셋업 착용'],['usagi/ribbonusagi_360','리본우사기 360°']]};
+    var RU={items:[J,S],v:[['usagi/ribbonusagi_selfie_hq','리본우사기 핑크그레이 착용샷'],['usagi/ribbonusagi_lookbook','리본우사기 셋업 착용'],['usagi/ribbonusagi_360','리본우사기 360°']]};
     ['ribbon usagi jacket','ribbon usagi skirt','ribbon usagi setup'].forEach(function(k){REELS[k]=RU});})();
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
