@@ -150,6 +150,10 @@
     ['ribbon usagi jacket','ribbon usagi skirt','ribbon usagi setup'].forEach(function(k){REELS[k]=RU});})();
   /* 핑크 버클백 엔젤핑크 (2026-11-14): 798 */
   REELS['idx:798']={items:[['핑크 버클백','/shop_view/?idx=798']],v:[['buckle/buckle_pink01','PINK BUCKLE BAG · 디테일']]};
+  /* 리본 젤리백 젤리핑크 (2026-11-15): 미니 792 · 미디움 793 */
+  (function(){var MI=['리본 젤리백 미니','/shop_view/?idx=792'],ME=['리본 젤리백 미디움','/shop_view/?idx=793'];
+    var vMi=['jelly/jelly_mini01','RIBBON MINI JELLY'],vMe=['jelly/jelly_medium01','PINK MEDIUM JELLY'];
+    REELS['idx:792']={items:[MI,ME],v:[vMi,vMe]};REELS['idx:793']={items:[ME,MI],v:[vMe,vMi]};})();
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
