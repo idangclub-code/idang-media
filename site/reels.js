@@ -154,6 +154,14 @@
   (function(){var MI=['리본 젤리백 미니','/shop_view/?idx=792'],ME=['리본 젤리백 미디움','/shop_view/?idx=793'];
     var vMi=['jelly/jelly_mini01','RIBBON MINI JELLY'],vMe=['jelly/jelly_medium01','PINK MEDIUM JELLY'];
     REELS['idx:792']={items:[MI,ME],v:[vMi,vMe]};REELS['idx:793']={items:[ME,MI],v:[vMe,vMi]};})();
+  /* 고객 언박싱 후기 (2026-11-16): 쿨핑크 리본다이어리 185 · 리본월렛 739 / 도쿄핑크 히메리본 780 · 리본미니 781 */
+  (function(){
+    function base(k){return REELS[k]&&REELS[k].v?REELS[k].v:[]}
+    REELS['idx:185']={items:[['리본 다이어리 쿨핑크','/shop_view/?idx=185']],v:[['ugc/diary185_creammii','리본 다이어리 쿨핑크 언박싱']].concat(base('ribbon diary'))};
+    REELS['idx:739']={items:[['리본 월렛 쿨핑크','/shop_view/?idx=739']],v:[['ugc/wallet739_mijjang','리본 월렛 쿨핑크 언박싱']].concat(base('ribbon wallet (cp)')).concat(base('ribbon wallet'))};
+    REELS['idx:780']={items:[['히메리본백 도쿄핑크','/shop_view/?idx=780']],v:[['ugc/hime780_dearmadu','히메리본 도쿄핑크 왓츠인마이백']].concat(base('hime ribbon'))};
+    REELS['idx:781']={items:[['리본 미니 도쿄핑크','/shop_view/?idx=781']],v:[['ugc/mini781_seolnyang','리본 미니 도쿄핑크 언박싱']].concat(base('ribbon mini'))};
+  })();
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
