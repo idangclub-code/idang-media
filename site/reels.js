@@ -162,6 +162,9 @@
     REELS['idx:780']={items:[['히메리본백 도쿄핑크','/shop_view/?idx=780']],v:[['ugc/hime780_dearmadu','히메리본 도쿄핑크 왓츠인마이백']].concat(base('hime ribbon'))};
     REELS['idx:781']={items:[['리본 미니 도쿄핑크','/shop_view/?idx=781']],v:[['ugc/mini781_seolnyang','리본 미니 도쿄핑크 언박싱']].concat(base('ribbon mini'))};
   })();
+  /* 신상 굿즈 풀패키지 박스 (2026-11-17): coffin full pack 830 · chef full pack 829 */
+  REELS['idx:830']={items:[['coffin full pack','/shop_view/?idx=830']],v:[['goods/box_pinkcoffin','coffin full pack · 박스 오픈']]};
+  REELS['idx:829']={items:[['chef full pack','/shop_view/?idx=829']],v:[['goods/box_himechef','chef full pack · 박스 오픈']]};
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
