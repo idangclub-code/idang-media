@@ -146,7 +146,7 @@
   REELS['idx:786']=REELS['idx:677'];
   /* 리본우사기 핑크그레이 (2026-11-10): 자켓 789 · 스커트 790 · 셋업 791 */
   (function(){var J=['리본우사기 자켓','/shop_view/?idx=789'],S=['리본우사기 스커트','/shop_view/?idx=790'];
-    var RU={items:[J,S],v:[['usagi/ribbonusagi_selfie_hq','리본우사기 핑크그레이 착용샷'],['usagi/ribbonusagi_lookbook','리본우사기 셋업 착용'],['usagi/ribbonusagi_360','리본우사기 360°']]};
+    var RU={items:[J,S],v:[['usagi/ribbonusagi_reel2','리본우사기 신상 언박싱 · 착용'],['usagi/ribbonusagi_selfie_hq','리본우사기 핑크그레이 착용샷'],['usagi/ribbonusagi_lookbook','리본우사기 셋업 착용'],['usagi/ribbonusagi_360','리본우사기 360°']]};
     ['ribbon usagi jacket','ribbon usagi skirt','ribbon usagi setup'].forEach(function(k){REELS[k]=RU});})();
   /* 핑크 버클백 엔젤핑크 (2026-11-14): 798 */
   REELS['idx:798']={items:[['핑크 버클백','/shop_view/?idx=798']],v:[['buckle/buckle_pink01','PINK BUCKLE BAG · 디테일']]};
