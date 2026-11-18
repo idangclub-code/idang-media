@@ -153,7 +153,7 @@
   /* 리본 젤리백 젤리핑크 (2026-11-15): 미니 792 · 미디움 793 */
   (function(){var MI=['리본 젤리백 미니','/shop_view/?idx=792'],ME=['리본 젤리백 미디움','/shop_view/?idx=793'];
     var vMi=['jelly/jelly_mini01','RIBBON MINI JELLY'],vMe=['jelly/jelly_medium01','PINK MEDIUM JELLY'];
-    var vR=['jelly/jelly_reel3','리본 젤리백 착용 릴스',[MI,ME]];REELS['idx:792']={items:[MI,ME],v:[vR,vMi,vMe]};REELS['idx:793']={items:[ME,MI],v:[vR,vMe,vMi]};})();
+    var vR=['jelly/jelly_reel3','리본 젤리백 착용 릴스',[MI,ME]];var vD=['jelly/jelly_reel4','리본 젤리백 디테일 · 내부',[MI,ME]];REELS['idx:792']={items:[MI,ME],v:[vD,vR,vMi,vMe]};REELS['idx:793']={items:[ME,MI],v:[vD,vR,vMe,vMi]};})();
   /* 고객 언박싱 후기 (2026-11-16): 쿨핑크 리본다이어리 185 · 리본월렛 739 / 도쿄핑크 히메리본 780 · 리본미니 781 */
   (function(){
     function base(k){return REELS[k]&&REELS[k].v?REELS[k].v:[]}
