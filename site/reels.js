@@ -163,6 +163,7 @@
     REELS['idx:781']={items:[['리본 미니 도쿄핑크','/shop_view/?idx=781']],v:[['ugc/mini781_seolnyang','리본 미니 도쿄핑크 언박싱']].concat(base('ribbon mini'))};
   })();
   /* 신상 굿즈 풀패키지 박스 (2026-11-17): coffin full pack 830 · chef full pack 829 */
+  REELS['idx:804']={items:[['chef diary paper','/shop_view/?idx=804']],v:[['diary/angel_diary_paper_flip','엔젤 다이어리 속지']]};
   REELS['idx:830']={items:[['coffin full pack','/shop_view/?idx=830']],v:[['goods/box_pinkcoffin','coffin full pack · 박스 오픈']]};
   REELS['idx:828']={items:[['hime mini poster','/shop_view/?idx=828']],v:[['goods/miniposter_reel','히메 미니포스터 세트 · 실물']]};REELS['idx:829']={items:[['chef full pack','/shop_view/?idx=829']],v:[['goods/box_himechef','chef full pack · 박스 오픈']]};
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
