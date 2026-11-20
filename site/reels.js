@@ -37,6 +37,9 @@
   var CS=document.currentScript&&document.currentScript.src||'';var VM=CS.match(/^(https:\/\/cdn\.jsdelivr\.net\/gh\/idangclub-code\/idang-media@[^/]+\/)/);var SCR=VM?VM[1]:BASE;
   /* 영상·썸네일도 같은 버전에서 불러오기 (@main 은 jsDelivr 캐시 때문에 새 파일이 늦게 뜰 수 있음) */
   BASE=SCR;
+  function vsrc(it,ext){return /^https?:/.test(it[0])?(ext==='jpg'?(it[3]||''):it[0]):BASE+it[0]+'.'+ext}
+  /* 직원 업로드 릴스 (Supabase) — staff/ 페이지에서 올린 영상이 바로 뜸. 설정 비어 있으면 건너뜀 */
+  var SUPA_URL='', SUPA_ANON='';
   var IG='https://www.instagram.com/idang.club/';
   /* 몰별 언어: 국문(idang.club) / EN(idanglobal) / JP(idangjapan) / CN(idangchina) — 상품 idx 는 4개 몰 공통 */
   var H=location.hostname, LANG=/idanglobal/.test(H)?'en':/idangjapan/.test(H)?'ja':/idangchina/.test(H)?'zh':'ko';
@@ -188,7 +191,7 @@
     var row=w.querySelector('.rr');
     R.v.forEach(function(it,i){
       var b=document.createElement('button'); b.className='rc'; b.setAttribute('aria-label',it[1]);
-      b.innerHTML='<video muted loop playsinline preload="none" poster="'+BASE+it[0]+'.jpg" data-src="'+BASE+it[0]+'.mp4"></video>';
+      b.innerHTML='<video muted loop playsinline preload="none" poster="'+vsrc(it,'jpg')+'" data-src="'+vsrc(it,'mp4')+'"></video>';
       b.onclick=function(){openM(R,i)}; row.appendChild(b);
     });
     w.querySelector('.l').onclick=function(){row.scrollBy({left:-row.clientWidth*.75,behavior:'smooth'})};
@@ -214,7 +217,7 @@
     var m=document.getElementById('im-rm');
     if(!m){m=document.createElement('div');m.id='im-rm';m.innerHTML='<div class="mb"><button class="x" aria-label="닫기">✕</button><video controls playsinline loop></video><div class="mi"></div></div>';document.body.appendChild(m);
       m.addEventListener('click',function(e){if(e.target===m||e.target.className==='x')close()});}
-    var it=R.v[i], v=m.querySelector('video'); v.poster=BASE+it[0]+'.jpg'; v.src=BASE+it[0]+'.mp4'; v.muted=false;
+    var it=R.v[i], v=m.querySelector('video'); v.poster=vsrc(it,'jpg'); v.src=vsrc(it,'mp4'); v.muted=false;
     var its=it[2]||R.items, mi=m.querySelector('.mi');
     mi.innerHTML='<div class="sm">@idang.club</div><h3>'+(LANG==='ko'?it[1]:'')+'</h3><div class="sm">'+TX.items.replace('{n}',its.length)+'</div>'+its.map(function(p){return '<a class="pp" href="'+plink(p[1])+'"><span>'+(LANG==='ko'?p[0]:'')+'</span><span>'+TX.go+'</span></a>'}).join('')+'<a class="ig" href="'+IG+'" target="_blank" rel="noopener">'+TX.ig+'</a>';
     if(LANG!=='ko'){var sp=mi.querySelectorAll('.pp span:first-child');its.forEach(function(p,j){pname(p,function(n){sp[j].textContent=n;if(j===0)mi.querySelector('h3').textContent=n;})});}
@@ -228,5 +231,19 @@
   (function(){if(window.__idangBgm)return;var b=document.createElement('script');b.src=SCR+'site/bgm.js?v='+Math.floor(Date.now()/36e5);b.defer=true;document.head.appendChild(b);})();
   window.__IM_REELS=REELS; window.__imReelsOpen=openM;
   if(/^\/reviews\/?$/.test(location.pathname)){var rs=document.createElement('script');rs.src=SCR+'site/reviews.js?v='+Math.floor(Date.now()/36e5);rs.defer=true;document.head.appendChild(rs);}
-  var n=0,t=setInterval(function(){build();if(document.getElementById('im-reels')||++n>40)clearInterval(t)},250);
+  function remote(done){
+    var m=location.search.match(/[?&]idx=(\d+)/); if(!m||!SUPA_URL||!SUPA_ANON||!window.fetch)return done();
+    var idx=+m[1], fin=false, to=setTimeout(function(){if(!fin){fin=true;done();}},2500);
+    fetch(SUPA_URL+'/rest/v1/reels?select=video_url,poster_url,title,products&active=is.true&idxs=cs.%7B'+idx+'%7D&order=sort.desc,created_at.desc',{headers:{apikey:SUPA_ANON,Authorization:'Bearer '+SUPA_ANON}})
+      .then(function(r){return r.ok?r.json():[]}).then(function(rows){
+        if(fin)return; fin=true; clearTimeout(to);
+        if(rows&&rows.length){var k='idx:'+idx,R=REELS[k];
+          var me=(document.title||'').split(' : ')[0].trim()||'idang club';
+          if(!R){var t=key();R=t?{items:REELS[t].items,v:REELS[t].v.slice()}:{items:[[me,'/shop_view/?idx='+idx]],v:[]};REELS[k]=R;}
+          var add=rows.map(function(r){var ps=(r.products||[]).map(function(p){return [p[0],'/shop_view/?idx='+p[1]]});return [r.video_url,r.title||'',ps.length?ps:null,r.poster_url||''];});
+          R.v=add.concat(R.v);}
+        done();
+      })['catch'](function(){if(!fin){fin=true;clearTimeout(to);done();}});
+  }
+  remote(function(){var n=0,t=setInterval(function(){build();if(document.getElementById('im-reels')||++n>40)clearInterval(t)},250);});
 })();
