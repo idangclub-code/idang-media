@@ -167,6 +167,15 @@
   REELS['idx:804']={items:[['chef diary paper','/shop_view/?idx=804']],v:[['diary/angel_diary_paper_flip','엔젤 다이어리 속지']]};
   REELS['idx:830']={items:[['coffin full pack','/shop_view/?idx=830']],v:[['goods/box_pinkcoffin','coffin full pack · 박스 오픈']]};
   REELS['idx:828']={items:[['hime mini poster','/shop_view/?idx=828']],v:[['goods/miniposter_reel','히메 미니포스터 세트 · 실물']]};REELS['idx:829']={items:[['chef full pack','/shop_view/?idx=829']],v:[['goods/box_himechef','chef full pack · 박스 오픈']]};
+  /* 2026-11-20 퍼우사기 착용 릴스 (833·834·843) + 이번 시즌 굿즈 공통 릴스 (onlynana x idang club 800~830, 855) */
+  (function(){
+    var FJ=['fur usagi jacket','/shop_view/?idx=833'],FS=['fur usagi skirt','/shop_view/?idx=834'],FU=['fur usagi setup','/shop_view/?idx=843'];
+    var vF=['usagi/furusagi_reel1','퍼우사기 셋업 성수 쇼룸 착용',[FU,FJ,FS]];
+    [[833,[FJ,FS,FU]],[834,[FS,FJ,FU]],[843,[FU,FJ,FS]]].forEach(function(a){var k='idx:'+a[0],o=REELS[k];REELS[k]={items:a[1],v:[vF].concat(o&&o.v?o.v:[])};});
+    var vG=['goods/season_goods_staffroom','이번 시즌 굿즈 · idang staff room'];
+    var GN={800:'chef die-cut',801:'coffin die-cut',802:'chef sticker',803:'coffin sticker set',804:'chef diary paper',805:'chef paper card',806:'chef band set',807:'usagi keyring',808:'coffin keyring',809:'chef stand long',810:'chef stand beret',811:'usagi stand',812:'chef card sticker',813:'chef photocard',814:'coffin photocard',815:'chef pin set',816:'coffin pin set',817:'usagi sticker',819:'coffin blanket',820:'chef blanket',821:'chef mouse pad',822:'usagi rug',823:'coffin rug',824:'twin coffin poster',825:'usagi poster',826:'chef postcard',827:'coffin postcard',828:'hime mini poster',829:'chef full pack',830:'coffin full pack',855:'angel diary coffin'};
+    Object.keys(GN).forEach(function(n){var k='idx:'+n,o=REELS[k];if(o){o.v=o.v.concat([vG]);}else{REELS[k]={items:[[GN[n],'/shop_view/?idx='+n]],v:[vG]};}});
+  })();
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
