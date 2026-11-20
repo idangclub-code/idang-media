@@ -199,7 +199,7 @@ async function compress(onp){
 }
 
 async function put(sig,blob,type){
-  const r=await fetch(sig.url,{method:'PUT',headers:{'content-type':type,'x-upsert':'false'},body:blob});
+  const r=await fetch(sig.url,{method:'PUT',headers:{'content-type':type},body:blob});
   if(!r.ok) throw new Error('업로드 실패 ('+r.status+')');
 }
 

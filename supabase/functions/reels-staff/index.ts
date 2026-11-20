@@ -2,7 +2,14 @@
 // env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (자동), REELS_STAFF_CODE (직원 코드)
 import { createClient } from "npm:@supabase/supabase-js@2";
 const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+import { AwsClient } from "npm:aws4fetch@1.0.20";
 const CODE = Deno.env.get("REELS_STAFF_CODE") || "";
+// 영상·썸네일은 Cloudflare R2 (idang-reels). 키가 없으면 Supabase 저장소로
+const R2_S3 = "https://555dc58398feb45076f2420485876ca1.r2.cloudflarestorage.com/idang-reels";
+const R2_PUB = "https://pub-1364e7260edf46f8bcd01dfd03b6a275.r2.dev";
+const R2_ID = Deno.env.get("R2_ACCESS_KEY_ID"), R2_KEY = Deno.env.get("R2_SECRET_ACCESS_KEY");
+const r2 = R2_ID && R2_KEY ? new AwsClient({ accessKeyId: R2_ID, secretAccessKey: R2_KEY, service: "s3", region: "auto" }) : null;
+const r2Put = async (path: string) => (await r2!.sign(new Request(`${R2_S3}/${path}?X-Amz-Expires=3600`, { method: "PUT" }), { aws: { signQuery: true } })).url;
 const H = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS", "Content-Type": "application/json" };
 const j = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: H });
 
@@ -17,13 +24,14 @@ Deno.serve(async (req) => {
     if (!CODE || b.code !== CODE) { await sb.from("reels_fail").insert({}); return j({ error: "코드가 맞지 않아요" }, 401); }
     // 4개 몰 페이지에 그대로 들어가는 글자라 태그 글자는 뺌
     const clean = (v: unknown, n: number) => String(v ?? "").replace(/[<>"'&`]/g, "").slice(0, n);
-    const pub = (p: string) => sb.storage.from("reels").getPublicUrl(p).data.publicUrl;
+    const pub = (p: string) => r2 ? `${R2_PUB}/${p}` : sb.storage.from("reels").getPublicUrl(p).data.publicUrl;
     switch (b.action) {
       case "check": return j({ ok: true });
       case "sign": {
         const id = crypto.randomUUID();
         const d = new Date().toISOString().slice(0, 10);
         const vp = `${d}/${id}.mp4`, pp = `${d}/${id}.jpg`;
+        if (r2) return j({ id, video: { path: vp, url: await r2Put(vp) }, poster: { path: pp, url: await r2Put(pp) } });
         const v = await sb.storage.from("reels").createSignedUploadUrl(vp);
         const p = await sb.storage.from("reels").createSignedUploadUrl(pp);
         if (v.error || p.error) throw v.error || p.error;
