@@ -18,3 +18,6 @@ drop policy if exists "reels public read" on public.reels;
 create policy "reels public read" on public.reels for select to anon, authenticated using (active);
 -- 쓰기는 Edge Function(reels-staff, service role)만. 버킷: 공개 읽기 'reels'
 insert into storage.buckets (id, name, public) values ('reels','reels',true) on conflict (id) do nothing;
+-- 직원 코드 틀린 기록 (reels-staff가 15분에 20번 넘으면 잠금). 오래된 줄은 지워도 됨
+create table if not exists public.reels_fail (at timestamptz not null default now());
+alter table public.reels_fail enable row level security;

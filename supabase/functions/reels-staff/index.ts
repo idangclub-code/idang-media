@@ -10,7 +10,13 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: H });
   try {
     const b = await req.json();
-    if (!CODE || b.code !== CODE) return j({ error: "코드가 맞지 않아요" }, 401);
+    // 6자리라 무한 대입 막기: 15분 동안 틀린 코드 20번이면 전체 잠금 (직원도 15분 기다림)
+    const since = new Date(Date.now() - 15 * 60e3).toISOString();
+    const { count } = await sb.from("reels_fail").select("*", { count: "exact", head: true }).gte("at", since);
+    if ((count ?? 0) >= 20) return j({ error: "잠시 잠겼어요. 15분 뒤에 다시 해 주세요" }, 429);
+    if (!CODE || b.code !== CODE) { await sb.from("reels_fail").insert({}); return j({ error: "코드가 맞지 않아요" }, 401); }
+    // 4개 몰 페이지에 그대로 들어가는 글자라 태그 글자는 뺌
+    const clean = (v: unknown, n: number) => String(v ?? "").replace(/[<>"'&`]/g, "").slice(0, n);
     const pub = (p: string) => sb.storage.from("reels").getPublicUrl(p).data.publicUrl;
     switch (b.action) {
       case "check": return j({ ok: true });
@@ -24,9 +30,12 @@ Deno.serve(async (req) => {
         return j({ id, video: { path: vp, url: v.data.signedUrl, token: v.data.token }, poster: { path: pp, url: p.data.signedUrl, token: p.data.token } });
       }
       case "create": {
-        const idxs = (b.products || []).map((p: [string, number]) => +p[1]).filter((n: number) => n > 0);
+        const products = (Array.isArray(b.products) ? b.products : []).slice(0, 50).map((p: [unknown, unknown]) => [clean(p?.[0], 80), Math.floor(+(p?.[1] ?? 0))]).filter((p: [string, number]) => p[1] > 0);
+        const idxs = products.map((p: [string, number]) => p[1]);
         if (!idxs.length) return j({ error: "상품을 골라 주세요" }, 400);
-        const row = { id: b.id, idxs, products: b.products, title: String(b.title || "").slice(0, 80), video_path: b.video_path, poster_path: b.poster_path, video_url: pub(b.video_path), poster_url: b.poster_path ? pub(b.poster_path) : "", uploader: String(b.uploader || "").slice(0, 30), sort: Date.now() / 1000 | 0 };
+        const P = /^\d{4}-\d{2}-\d{2}\/[0-9a-f-]{36}\.(mp4|jpg)$/;
+        if (!P.test(b.video_path || "") || (b.poster_path && !P.test(b.poster_path))) return j({ error: "파일 경로가 이상해요" }, 400);
+        const row = { id: b.id, idxs, products, title: clean(b.title, 80), video_path: b.video_path, poster_path: b.poster_path, video_url: pub(b.video_path), poster_url: b.poster_path ? pub(b.poster_path) : "", uploader: clean(b.uploader, 30), sort: Date.now() / 1000 | 0 };
         const { error } = await sb.from("reels").insert(row);
         if (error) throw error;
         return j({ ok: true, row });
@@ -58,7 +67,9 @@ Deno.serve(async (req) => {
       }
       case "update": {
         const u: Record<string, unknown> = {};
-        for (const k of ["title", "active", "sort"]) if (k in b) u[k] = b[k];
+        if ("title" in b) u.title = clean(b.title, 80);
+        if ("active" in b) u.active = !!b.active;
+        if ("sort" in b) u.sort = Math.floor(+b.sort) || 0;
         const { error } = await sb.from("reels").update(u).eq("id", b.id);
         if (error) throw error;
         return j({ ok: true });

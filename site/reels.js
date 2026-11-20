@@ -39,7 +39,7 @@
   BASE=SCR;
   function vsrc(it,ext){return /^https?:/.test(it[0])?(ext==='jpg'?(it[3]||''):it[0]):BASE+it[0]+'.'+ext}
   /* 직원 업로드 릴스 (Supabase) — staff/ 페이지에서 올린 영상이 바로 뜸. 설정 비어 있으면 건너뜀 */
-  var SUPA_URL='', SUPA_ANON='';
+  var SUPA_URL='https://valklvrqjtbeoyizpxjf.supabase.co', SUPA_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhbGtsdnJxanRiZW95aXpweGpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMTg2NjMsImV4cCI6MjEwNzg5NDY2M30.vAMhQe2vITn4cohgfWFHEyqyTpE0GcTsfjXDhdRWuC8';
   var IG='https://www.instagram.com/idang.club/';
   /* 몰별 언어: 국문(idang.club) / EN(idanglobal) / JP(idangjapan) / CN(idangchina) — 상품 idx 는 4개 몰 공통 */
   var H=location.hostname, LANG=/idanglobal/.test(H)?'en':/idangjapan/.test(H)?'ja':/idangchina/.test(H)?'zh':'ko';
