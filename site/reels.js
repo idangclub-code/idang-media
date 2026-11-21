@@ -179,6 +179,10 @@
     var GN={800:'chef die-cut',801:'coffin die-cut',802:'chef sticker',803:'coffin sticker set',804:'chef diary paper',805:'chef paper card',806:'chef band set',807:'usagi keyring',808:'coffin keyring',809:'chef stand long',810:'chef stand beret',811:'usagi stand',812:'chef card sticker',813:'chef photocard',814:'coffin photocard',815:'chef pin set',816:'coffin pin set',817:'usagi sticker',819:'coffin blanket',820:'chef blanket',821:'chef mouse pad',822:'usagi rug',823:'coffin rug',824:'twin coffin poster',825:'usagi poster',826:'chef postcard',827:'coffin postcard',828:'hime mini poster',829:'chef full pack',830:'coffin full pack',855:'angel diary coffin'};
     Object.keys(GN).forEach(function(n){var k='idx:'+n,o=REELS[k];if(o){o.v=o.v.concat([vG]);}else{REELS[k]={items:[[GN[n],'/shop_view/?idx='+n]],v:[vG]};}});
   })();
+  /* 2026-11-21 굿즈 실물 룸 영상: 관 블랭킷 819 · 셰프 블랭킷 820 · 우사기 러그 822 · 트윈 관 포스터 824 · 우사기 포스터 825 */
+  (function(){
+    [[819,'goods/coffin_blanket_room','coffin 블랭킷 · 실물'],[820,'goods/chef_blanket_room','hime chef 블랭킷 · 실물'],[822,'goods/usagi_rug_room','usagi 하트 러그 · 실물'],[824,'goods/twin_poster_room','twin coffin 패브릭 포스터 · 실물'],[825,'goods/usagi_poster_room','usagi 패브릭 포스터 · 실물']].forEach(function(a){var k='idx:'+a[0],o=REELS[k];if(o){o.v=[[a[1],a[2]]].concat(o.v);}else{REELS[k]={items:[['idang club goods','/shop_view/?idx='+a[0]]],v:[[a[1],a[2]]]};}});
+  })();
   function key(){var m=location.search.match(/[?&]idx=(\d+)/);if(m&&REELS['idx:'+m[1]])return 'idx:'+m[1];var t=(document.title||'').split(' : ')[0].trim().toLowerCase().replace(/\s+/g,' ');return REELS[t]?t:null;}
   var bag='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
   function build(){
